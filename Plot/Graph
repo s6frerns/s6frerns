@@ -1,0 +1,66 @@
+#import matplotlib.pyplot as plt
+#import csv
+#import dat
+
+#x=[]
+#y=[]
+
+#with open('test.csv', 'r') as csvfile:
+ #   plots= csv.reader(csvfile, delimiter=',')
+ #   for row in plots:
+  #      x.append(int(row[0]))
+   #     y.append(int(row[1]))
+
+
+#plt.plot(x,y, marker='o')
+
+#plt.title('Data from the CSV File: People and Expenses')
+
+#plt.xlabel('Number of People')
+#plt.ylabel('Expenses')
+
+#plt.show()
+import numpy as np
+from matplotlib import pyplot as plt
+import os
+
+directory = '/data/linac2/klystron/th2100d-210038'
+
+
+for filename in os.listdir(directory):
+    if filename.endswith(".dat"):
+        data=np.loadtxt(filename)
+#plt.plot(data[:,0],data[:,1],'bo')
+        x=data[:,1]
+        a=data[:,2]*2000
+        b=data[:,3]*30000
+        c=data[:,4]*0.05
+        d=data[:,5]*0.035
+
+        fig, axs = plt.subplots(2, 2)
+
+        axs[0, 1].plot(x,a ,':ro')
+        plt.setp(axs[0, 1], xlabel='t in s')
+        plt.setp(axs[0, 1], ylabel='U in V')
+        axs[0,1].set_title('PVN-Spannung')
+#########################################################################
+        axs[0, 0].plot(x,b,':y')
+        plt.setp(axs[0, 0], xlabel='t in s')
+        plt.setp(axs[0, 0], ylabel='U in V')
+        axs[0,0].set_title('Klystron-Spannung')
+################################################################
+        axs[1, 0].plot(x,c,':b')
+        plt.setp(axs[1, 0], xlabel='t in s')
+        plt.setp(axs[1, 0], ylabel='I in A')
+        axs[1,0].set_title('Klystron-Strom')
+##############################################################
+        axs[1, 1].plot(x,d,':b')
+        plt.setp(axs[1, 1], xlabel='t in s')
+        plt.setp(axs[1, 1], ylabel='I in A')
+        axs[1,1].set_title('Klystron-Stom(500 Ohm)')
+##############################################################
+        fig.tight_layout()
+
+        plt.legend()
+        plt.savefig('plot.png', dpi=300, bbox_inches='tight')
+        plt.show()
